@@ -1,0 +1,22 @@
+spring:
+  datasource:
+    url: jdbc:postgresql://localhost:5432/seller
+    username: lahiru
+    password: lahiru
+    driver-class-name: org.postgresql.Driver
+  jpa:
+    hibernate:
+      ddl-auto: update
+    show-sql: true    # Corrected format (colon instead of equals)
+    database: postgresql
+    database-platform: org.hibernate.dialect.PostgreSQLDialect
+#  kafka:
+#    producer:
+#      bootstrap-servers: localhost:9092
+#      key-serializer: org.apache.kafka.common.serialization.StringSerializer
+#      value-serializer: org.springframework.kafka.support.serializer.JsonSerializer
+#      properties:
+#        spring.json.type.mapping: paymentConfirmation:org.lahiru.ecommerce.notification.PaymentNotificationRequest
+
+server:
+  port: 8060    # There was no space between port number and the date (80602025...)
