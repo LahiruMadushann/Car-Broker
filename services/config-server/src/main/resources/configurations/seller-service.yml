@@ -7,7 +7,7 @@ spring:
   jpa:
     hibernate:
       ddl-auto: update
-    show-sql: true    # Corrected format (colon instead of equals)
+    show-sql: true
     database: postgresql
     database-platform: org.hibernate.dialect.PostgreSQLDialect
 #  kafka:
@@ -19,4 +19,4 @@ spring:
 #        spring.json.type.mapping: paymentConfirmation:org.lahiru.ecommerce.notification.PaymentNotificationRequest
 
 server:
-  port: 8060    # There was no space between port number and the date (80602025...)
+  port: 8060
