@@ -4,6 +4,7 @@ import com.example.buyer.model.enums.Branch;
 import com.example.buyer.model.enums.Speciality;
 import jakarta.persistence.*;
 import lombok.*;
+import lombok.experimental.SuperBuilder;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.LastModifiedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
@@ -11,15 +12,16 @@ import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 import java.time.LocalDateTime;
 import java.util.List;
 
+@EqualsAndHashCode(callSuper=true)
 @AllArgsConstructor
 @NoArgsConstructor
 @Getter
 @Setter
-@Builder
+@SuperBuilder
 @Entity
 @EntityListeners(AuditingEntityListener.class)
 @Table(name = "buyer_details")
-public class BuyerDetails {
+public class BuyerDetails extends BaseEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "buyer_id")
@@ -44,14 +46,6 @@ public class BuyerDetails {
     @Column(name = "speciality")
     @Enumerated(EnumType.STRING)
     private Speciality speciality;
-
-    @CreatedDate
-    @Column(name = "created_at", updatable = false, nullable = false)
-    private LocalDateTime createdAt;
-
-    @LastModifiedDate
-    @Column(name = "last_modified_date", insertable = false)
-    private LocalDateTime lastModifiedDate;
 
     @OneToMany(mappedBy = "buyerDetails", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     private List<BuyerEmails> buyerEmails;
