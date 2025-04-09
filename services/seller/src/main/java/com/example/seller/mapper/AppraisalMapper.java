@@ -2,12 +2,24 @@ package com.example.seller.mapper;
 
 import com.example.seller.dto.SellerCarDetailsRequest;
 import com.example.seller.model.CarDetails;
+import com.example.seller.model.SellerAccountDetails;
 import com.example.seller.model.SellerCarDetails;
 import com.example.seller.model.SellerDetails;
+import com.example.seller.service.PasswordService;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.security.KeyStore;
+import java.security.SecureRandom;
+import java.util.Base64;
+
 @Service
+@RequiredArgsConstructor
 public class AppraisalMapper {
+    private final String SECRET_KEY = Base64.getEncoder().encodeToString(new SecureRandom().generateSeed(32));
+
+    private final PasswordService passwordService;
+
     public SellerCarDetails toSeller(SellerCarDetailsRequest request) {
         if (request == null) {
             throw new IllegalArgumentException("sellerCarDetailsRequest cannot be null");
@@ -59,12 +71,19 @@ public class AppraisalMapper {
                 .wheel(request.wheel())
                 .build();
 
+        SellerAccountDetails sellerAccountDetails = SellerAccountDetails.builder()
+                .sellerAccountUserName(request.sellerEmail())
+                .sellerAccountEmail(request.sellerEmail())
+                .sellerAccountPassword(passwordService.hashPassword(SECRET_KEY))
+                .build();
+
         return SellerCarDetails.builder()
                 .appraisalId(request.appraisalId())
                 .status(request.status())
                 .ip(request.ip())
                 .sellerDetails(sellerDetails)
                 .carDetails(carDetails)
+                .sellerAccountDetails(sellerAccountDetails)
                 .desireDateToSell(request.desireDateToSell())
                 .photoFrontView(request.photoFrontView())
                 .photoBackView(request.photoBackView())

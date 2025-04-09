@@ -6,8 +6,7 @@ import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 @AllArgsConstructor
 @NoArgsConstructor
-@Getter
-@Setter
+@Data
 @Builder
 @Entity
 @EntityListeners(AuditingEntityListener.class)
