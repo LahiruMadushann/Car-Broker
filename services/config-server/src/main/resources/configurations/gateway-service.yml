@@ -1,0 +1,18 @@
+server:
+  port: 8222
+spring:
+  cloud:
+    gateway:
+      discovery:
+        locator:
+          enabled: true
+      routes:
+        - id: buyer-service
+          uri: lb:http://BUYER-SERVICE
+          predicates:
+            - Path=/api/v1/buyer/**
+        - id: seller-service
+          uri: lb:http://SELLER-SERVICE
+          predicates:
+            - Path=/api/v1/seller/**
+

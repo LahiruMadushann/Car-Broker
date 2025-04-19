@@ -9,6 +9,7 @@
         <outputRelativeToContentRoot value="true" />
         <module name="config-server" />
         <module name="discovery" />
+        <module name="gateway" />
       </profile>
       <profile name="Annotation profile for notification" enabled="true">
         <sourceOutputDir name="target/generated-sources/annotations" />
@@ -36,6 +37,7 @@
       <module name="buyer" options="-parameters" />
       <module name="config-server" options="-parameters" />
       <module name="discovery" options="-parameters" />
+      <module name="gateway" options="-parameters" />
       <module name="notification" options="-parameters" />
       <module name="seller" options="-parameters" />
     </option>
