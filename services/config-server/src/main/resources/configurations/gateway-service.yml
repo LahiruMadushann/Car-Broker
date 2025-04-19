@@ -12,7 +12,7 @@ spring:
           predicates:
             - Path=/api/v1/buyer/**
         - id: seller-service
-          uri: lb:http://SELLER-SERVICE
+          uri: lb://SELLER-SERVICE
           predicates:
-            - Path=/api/v1/seller/**
+              - Path=/api/v1/seller/**
 
