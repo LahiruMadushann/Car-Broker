@@ -1,10 +1,12 @@
 package com.example.buyer.serviceImpl;
 
 import com.example.buyer.dto.BuyerRegistrationRequest;
+import com.example.buyer.dto.BuyerRegistrationResponse;
 import com.example.buyer.exception.BadRequestException;
 import com.example.buyer.exception.BuyerException;
 import com.example.buyer.exception.DatabaseException;
 import com.example.buyer.mapper.BuyerMapper;
+import com.example.buyer.model.BuyerDetails;
 import com.example.buyer.repository.BuyerRepository;
 import com.example.buyer.service.BuyerService;
 import lombok.RequiredArgsConstructor;
@@ -13,6 +15,7 @@ import org.springframework.dao.DataAccessException;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
 import java.util.Objects;
 
 @Service
@@ -34,6 +37,24 @@ public class BuyerServiceImpl implements BuyerService {
             throw new DatabaseException("Database error occurred while saving buyer");
         } catch (Exception e) {
             throw new BuyerException("Unexpected error occurred", e);
+        }
+    }
+
+    @Override
+    public List<BuyerRegistrationResponse> getAllBuyers() {
+        try {
+
+            return buyerRepository.findAll()
+                    .stream()
+                    .map(buyerMapper::fromBuyer)
+                    .toList();
+
+        } catch (DataAccessException e) {
+            log.error("Database access error while fetching all buyers", e);
+            throw new DatabaseException("Database error occurred while retrieving buyers");
+        } catch (Exception e) {
+            log.error("Unexpected error while fetching all buyers", e);
+            throw new BuyerException("Unexpected error occurred while retrieving buyers", e);
         }
     }
 }

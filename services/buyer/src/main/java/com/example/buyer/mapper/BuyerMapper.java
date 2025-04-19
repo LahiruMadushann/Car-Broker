@@ -1,6 +1,7 @@
 package com.example.buyer.mapper;
 
 import com.example.buyer.dto.BuyerRegistrationRequest;
+import com.example.buyer.dto.BuyerRegistrationResponse;
 import com.example.buyer.model.BuyerAccountDetails;
 import com.example.buyer.model.BuyerDetails;
 import com.example.buyer.service.PasswordService;
@@ -40,6 +41,29 @@ public class BuyerMapper {
                 .branch(request.branch())
                 .speciality(request.speciality())
                 .buyerAccountDetails(buyerAccountDetails)
+                .build();
+    }
+
+    public BuyerRegistrationResponse fromBuyer(BuyerDetails buyer) {
+        if (buyer == null) {
+            throw new IllegalArgumentException("BuyerDetails cannot be null");
+        }
+
+        var account = buyer.getBuyerAccountDetails();
+        String email = account != null ? account.getEmail() : null;
+
+        return BuyerRegistrationResponse.builder()
+                .buyerId(buyer.getBuyerId())
+                .buyerName(buyer.getBuyerName())
+                .buyerPhoneNumber(buyer.getBuyerPhoneNumber())
+                .introductionFee(buyer.getIntroductionFee())
+                .referralFee(buyer.getReferralFee())
+                .postalCode(buyer.getPostalCode())
+                .district(buyer.getDistrict())
+                .city(buyer.getCity())
+                .email(email)
+                .branch(buyer.getBranch())
+                .speciality(buyer.getSpeciality())
                 .build();
     }
 }
