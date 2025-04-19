@@ -1,11 +1,13 @@
 package com.example.seller.serviceImpl;
 
+import com.example.seller.dto.BuyerDetails;
 import com.example.seller.dto.SellerCarDetailsRequest;
 import com.example.seller.exception.AppraisalException;
 import com.example.seller.exception.BadRequestException;
 import com.example.seller.exception.DatabaseException;
 import com.example.seller.mapper.AppraisalMapper;
 import com.example.seller.repository.ManualAppraisalRepo;
+import com.example.seller.service.BuyerServiceClient;
 import com.example.seller.service.ManualAppraisalService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -13,6 +15,7 @@ import org.springframework.dao.DataAccessException;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
 import java.util.Objects;
 
 @Service
@@ -21,10 +24,15 @@ import java.util.Objects;
 public class ManualAppraisalServiceImpl implements ManualAppraisalService {
     private final ManualAppraisalRepo manualAppraisalRepo;
     private final AppraisalMapper appraisalMapper;
+    private final BuyerServiceClient buyerServiceClient;
 
     @Override
     public Long createManualAppraisal(SellerCarDetailsRequest request) {
         try {
+            BuyerDetails buyerData = null;
+
+            List<BuyerDetails> allBuyers = buyerServiceClient.getAllBuyers();
+
             var seller = manualAppraisalRepo.save(appraisalMapper.toSeller(request));
             return seller.getAppraisalId();
         } catch (DataIntegrityViolationException e) {
