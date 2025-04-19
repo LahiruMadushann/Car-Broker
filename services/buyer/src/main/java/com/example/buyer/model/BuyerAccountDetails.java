@@ -33,4 +33,7 @@ public class BuyerAccountDetails extends BaseEntity {
     @Column(name = "password")
     private String password;
 
+    @OneToOne(mappedBy = "buyerAccountDetails")
+    private BuyerDetails buyerDetails;
+
 }

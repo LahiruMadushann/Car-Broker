@@ -34,10 +34,19 @@ public class BuyerDetails extends BaseEntity {
     private String buyerPhoneNumber;
 
     @Column(name = "introduction_fee")
-    private String introductionFee;
+    private Double introductionFee;
 
     @Column(name = "referral_fee")
-    private String referralFee;
+    private Double referralFee;
+
+    @Column(name = "postal_code")
+    private String postalCode;
+
+    @Column(name = "district")
+    private String district;
+
+    @Column(name = "city")
+    private String city;
 
     @Column(name = "branch")
     @Enumerated(EnumType.STRING)
@@ -49,6 +58,10 @@ public class BuyerDetails extends BaseEntity {
 
     @OneToMany(mappedBy = "buyerDetails", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     private List<BuyerEmails> buyerEmails;
+
+    @OneToOne(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @JoinColumn(name = "buyer_account_id", referencedColumnName = "buyer_account_id")
+    private BuyerAccountDetails buyerAccountDetails;
 
     @OneToMany(mappedBy = "buyerDetails", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     private List<BuyerArea> buyerArea;
