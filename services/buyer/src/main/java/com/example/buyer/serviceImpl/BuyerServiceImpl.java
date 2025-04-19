@@ -2,11 +2,13 @@ package com.example.buyer.serviceImpl;
 
 import com.example.buyer.dto.BuyerRegistrationRequest;
 import com.example.buyer.dto.BuyerRegistrationResponse;
+import com.example.buyer.dto.MatchingConditionRequest;
 import com.example.buyer.exception.BadRequestException;
 import com.example.buyer.exception.BuyerException;
 import com.example.buyer.exception.DatabaseException;
 import com.example.buyer.mapper.BuyerMapper;
 import com.example.buyer.model.BuyerDetails;
+import com.example.buyer.model.enums.Speciality;
 import com.example.buyer.repository.BuyerRepository;
 import com.example.buyer.service.BuyerService;
 import lombok.RequiredArgsConstructor;
@@ -56,5 +58,10 @@ public class BuyerServiceImpl implements BuyerService {
             log.error("Unexpected error while fetching all buyers", e);
             throw new BuyerException("Unexpected error occurred while retrieving buyers", e);
         }
+    }
+
+    @Override
+    public Long createMatchingConditions(Long buyerId, Speciality speciality, MatchingConditionRequest matchingConditionRequest) {
+        return 0L;
     }
 }

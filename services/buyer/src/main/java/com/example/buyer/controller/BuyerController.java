@@ -2,6 +2,8 @@ package com.example.buyer.controller;
 
 import com.example.buyer.dto.BuyerRegistrationRequest;
 import com.example.buyer.dto.BuyerRegistrationResponse;
+import com.example.buyer.dto.MatchingConditionRequest;
+import com.example.buyer.model.enums.Speciality;
 import com.example.buyer.service.BuyerService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -29,5 +31,15 @@ public class BuyerController {
         var response = buyerService.getAllBuyers();
         return ResponseEntity.ok(response);
 
+    }
+
+    @PutMapping("/{buyerId}/{speciality}/matching-conditions")
+    public ResponseEntity<Long> registerMatchingConditions(
+            @PathVariable Long buyerId,
+            @PathVariable Speciality speciality,
+            @RequestBody @Valid MatchingConditionRequest matchingConditionRequest) {
+
+        Long response = buyerService.createMatchingConditions(buyerId, speciality, matchingConditionRequest);
+        return ResponseEntity.ok(response);
     }
 }
