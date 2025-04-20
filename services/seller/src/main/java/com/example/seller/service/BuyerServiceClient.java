@@ -1,6 +1,7 @@
 package com.example.seller.service;
 
 import com.example.seller.dto.BuyerDetails;
+import com.example.seller.dto.MatchingConditionResponse;
 import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;

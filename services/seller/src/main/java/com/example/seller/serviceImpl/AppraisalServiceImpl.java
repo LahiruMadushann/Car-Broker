@@ -7,7 +7,9 @@ import com.example.seller.exception.DatabaseException;
 import com.example.seller.mapper.AppraisalMapper;
 import com.example.seller.repository.AppraisalRepo;
 import com.example.seller.service.AppraisalService;
+import com.example.seller.service.AssessedService;
 import com.example.seller.service.BuyerServiceClient;
+import com.example.seller.service.MatchingConditionService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.dao.DataAccessException;
@@ -24,13 +26,16 @@ public class AppraisalServiceImpl implements AppraisalService {
     private final AppraisalRepo appraisalRepo;
     private final AppraisalMapper appraisalMapper;
     private final BuyerServiceClient buyerServiceClient;
+    private final MatchingConditionService matchingConditionService;
+    private final AssessedService assessedService;
 
     @Override
     public Long createAppraisal(SellerCarDetailsRequest request) {
         try {
-            var matchingConditions = buyerServiceClient.getAllMatchingConditions();
-
             var seller = appraisalRepo.save(appraisalMapper.toSeller(request));
+            var matchingConditions = buyerServiceClient.getAllMatchingConditions();
+            var matchedShopIds = matchingConditionService.automaticMatch(matchingConditions,seller);
+            assessedService.saveAssessedDetails(matchedShopIds, seller.getAppraisalId());
             return seller.getAppraisalId();
         } catch (DataIntegrityViolationException e) {
             throw new BadRequestException("Invalid data: " + Objects.requireNonNull(e.getRootCause()).getMessage());
