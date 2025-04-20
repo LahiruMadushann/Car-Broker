@@ -5,6 +5,7 @@ import com.example.buyer.dto.BuyerRegistrationResponse;
 import com.example.buyer.dto.MatchingConditionRequest;
 import com.example.buyer.model.enums.Speciality;
 import com.example.buyer.service.BuyerService;
+import com.example.buyer.service.MatchingConditionService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -18,6 +19,7 @@ import java.util.List;
 public class BuyerController {
 
     private final BuyerService buyerService;
+    private final MatchingConditionService matchingConditionService;
 
     @PostMapping("/create")
     private ResponseEntity<Long> createBuyer(@RequestBody @Valid BuyerRegistrationRequest buyerRegistrationRequest) {
@@ -39,7 +41,7 @@ public class BuyerController {
             @PathVariable Speciality speciality,
             @RequestBody @Valid MatchingConditionRequest matchingConditionRequest) {
 
-        Long response = buyerService.createMatchingConditions(buyerId, speciality, matchingConditionRequest);
+        Long response = matchingConditionService.createMatchingConditions(buyerId, speciality, matchingConditionRequest);
         return ResponseEntity.ok(response);
     }
 }

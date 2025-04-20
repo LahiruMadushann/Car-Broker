@@ -59,9 +59,4 @@ public class BuyerServiceImpl implements BuyerService {
             throw new BuyerException("Unexpected error occurred while retrieving buyers", e);
         }
     }
-
-    @Override
-    public Long createMatchingConditions(Long buyerId, Speciality speciality, MatchingConditionRequest matchingConditionRequest) {
-        return 0L;
-    }
 }

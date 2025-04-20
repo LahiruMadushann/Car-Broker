@@ -10,5 +10,4 @@ import java.util.List;
 public interface BuyerService {
     Long createBuyer(BuyerRegistrationRequest buyerRegistrationRequest);
     List<BuyerRegistrationResponse> getAllBuyers();
-    Long createMatchingConditions(Long buyerId, Speciality speciality, MatchingConditionRequest matchingConditionRequest);
 }
