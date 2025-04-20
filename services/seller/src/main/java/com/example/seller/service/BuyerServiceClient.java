@@ -14,4 +14,7 @@ public interface BuyerServiceClient {
     @GetMapping("/all")
     List<BuyerDetails> getAllBuyers();
 
+    @GetMapping("/matching-conditions")
+    List<MatchingConditionResponse> getAllMatchingConditions();
+
 }

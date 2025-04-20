@@ -5,8 +5,9 @@ import com.example.seller.exception.AppraisalException;
 import com.example.seller.exception.BadRequestException;
 import com.example.seller.exception.DatabaseException;
 import com.example.seller.mapper.AppraisalMapper;
-import com.example.seller.repository.ManualAppraisalRepo;
-import com.example.seller.service.ManualAppraisalService;
+import com.example.seller.repository.AppraisalRepo;
+import com.example.seller.service.AppraisalService;
+import com.example.seller.service.BuyerServiceClient;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.dao.DataAccessException;
@@ -18,14 +19,18 @@ import java.util.Objects;
 @Service
 @Slf4j
 @RequiredArgsConstructor
-public class ManualAppraisalServiceImpl implements ManualAppraisalService {
-    private final ManualAppraisalRepo manualAppraisalRepo;
+public class AppraisalServiceImpl implements AppraisalService {
+
+    private final AppraisalRepo appraisalRepo;
     private final AppraisalMapper appraisalMapper;
+    private final BuyerServiceClient buyerServiceClient;
 
     @Override
-    public Long createManualAppraisal(SellerCarDetailsRequest request) {
+    public Long createAppraisal(SellerCarDetailsRequest request) {
         try {
-            var seller = manualAppraisalRepo.save(appraisalMapper.toSeller(request));
+            var matchingConditions = buyerServiceClient.getAllMatchingConditions();
+
+            var seller = appraisalRepo.save(appraisalMapper.toSeller(request));
             return seller.getAppraisalId();
         } catch (DataIntegrityViolationException e) {
             throw new BadRequestException("Invalid data: " + Objects.requireNonNull(e.getRootCause()).getMessage());
