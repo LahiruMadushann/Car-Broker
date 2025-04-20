@@ -10,6 +10,12 @@ spring:
     show-sql: true
     database: postgresql
     database-platform: org.hibernate.dialect.PostgreSQLDialect
+  kafka:
+    bootstrap-servers: localhost:9092
+    consumer:
+      group-id: appraisal-service-group
+    topic:
+      appraisal-requests: appraisal-requests
 #  kafka:
 #    producer:
 #      bootstrap-servers: localhost:9092
