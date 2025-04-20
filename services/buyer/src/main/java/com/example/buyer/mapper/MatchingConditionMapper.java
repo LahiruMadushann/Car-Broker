@@ -1,8 +1,6 @@
 package com.example.buyer.mapper;
 
-import com.example.buyer.dto.BuyerRegistrationRequest;
-import com.example.buyer.dto.CarHandlingConditionRequest;
-import com.example.buyer.dto.MatchingConditionRequest;
+import com.example.buyer.dto.*;
 import com.example.buyer.model.*;
 import com.example.buyer.model.enums.Speciality;
 import org.springframework.stereotype.Service;
@@ -193,5 +191,97 @@ public class MatchingConditionMapper {
                 .carTravelDistanceNgTo(conditions.carTravelDistanceNgTo())
                 .exclusivity(conditions.exclusivity())
                 .build();
+    }
+
+    public MatchingConditionResponse fromMatchingCondition(BuyerDetails buyer){
+        if (buyer == null) {
+            throw new IllegalArgumentException("BuyerDetails cannot be null");
+        }
+
+        var account = buyer.getBuyerAccountDetails();
+        String email = account != null ? account.getEmail() : null;
+
+        List<String> buyerEmails = buyer.getBuyerEmails() != null ?
+                buyer.getBuyerEmails().stream()
+                        .map(BuyerEmails::getBuyerEmail)
+                        .collect(Collectors.toList()) :
+                List.of();
+
+        List<BuyerAreaResponse> buyerAreas = buyer.getBuyerArea() != null ?
+                buyer.getBuyerArea().stream()
+                        .map(area -> new BuyerAreaResponse(
+                                area.getPostalCode(),
+                                area.getDistrict(),
+                                area.getCity()
+                        ))
+                        .collect(Collectors.toList()) :
+                List.of();
+
+        CarHandlingConditionsResponse specialConditions = null;
+        if (buyer.getSpecialCarHandlingConditions() != null) {
+            var special = buyer.getSpecialCarHandlingConditions();
+            specialConditions = mapToCarHandlingConditionsResponse(special);
+        }
+
+        CarHandlingConditionsResponse generalConditions = null;
+        if (buyer.getGeneralCarHandlingConditions() != null) {
+            var general = buyer.getGeneralCarHandlingConditions();
+            generalConditions = mapToCarHandlingConditionsResponse(general);
+        }
+
+        return MatchingConditionResponse.builder()
+                .buyerId(buyer.getBuyerId())
+                .buyerName(buyer.getBuyerName())
+                .buyerPhoneNumber(buyer.getBuyerPhoneNumber())
+                .introductionFee(buyer.getIntroductionFee())
+                .referralFee(buyer.getReferralFee())
+                .postalCode(buyer.getPostalCode())
+                .district(buyer.getDistrict())
+                .city(buyer.getCity())
+                .email(email)
+                .branch(buyer.getBranch())
+                .speciality(buyer.getSpeciality())
+                .buyerEmails(buyerEmails)
+                .buyerAreas(buyerAreas)
+                .specialCarHandlingConditions(specialConditions)
+                .generalCarHandlingConditions(generalConditions)
+                .build();
+    }
+
+
+    private CarHandlingConditionsResponse mapToCarHandlingConditionsResponse(Object conditions) {
+        if (conditions instanceof SpecialCarHandlingConditions special) {
+            return CarHandlingConditionsResponse.builder()
+                    .carOrigin(special.getCarOrigin())
+                    .notMove(special.getNotMove())
+                    .shopCeilMatchCount(special.getShopCeilMatchCount())
+                    .carYearOkFrom(special.getCarYearOkFrom())
+                    .carYearOkTo(special.getCarYearOkTo())
+                    .carYearNgFrom(special.getCarYearNgFrom())
+                    .carYearNgTo(special.getCarYearNgTo())
+                    .carTravelDistanceOkFrom(special.getCarTravelDistanceOkFrom())
+                    .carTravelDistanceOkTo(special.getCarTravelDistanceOkTo())
+                    .carTravelDistanceNgFrom(special.getCarTravelDistanceNgFrom())
+                    .carTravelDistanceNgTo(special.getCarTravelDistanceNgTo())
+                    .exclusivity(special.getExclusivity())
+                    .build();
+        } else if (conditions instanceof GeneralCarHandlingConditions general) {
+            return CarHandlingConditionsResponse.builder()
+                    .carOrigin(general.getCarOrigin())
+                    .notMove(general.getNotMove())
+                    .shopCeilMatchCount(general.getShopCeilMatchCount())
+                    .carYearOkFrom(general.getCarYearOkFrom())
+                    .carYearOkTo(general.getCarYearOkTo())
+                    .carYearNgFrom(general.getCarYearNgFrom())
+                    .carYearNgTo(general.getCarYearNgTo())
+                    .carTravelDistanceOkFrom(general.getCarTravelDistanceOkFrom())
+                    .carTravelDistanceOkTo(general.getCarTravelDistanceOkTo())
+                    .carTravelDistanceNgFrom(general.getCarTravelDistanceNgFrom())
+                    .carTravelDistanceNgTo(general.getCarTravelDistanceNgTo())
+                    .exclusivity(general.getExclusivity())
+                    .build();
+        }
+        return null;
+
     }
 }
