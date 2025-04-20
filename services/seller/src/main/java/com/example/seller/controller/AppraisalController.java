@@ -18,8 +18,8 @@ public class AppraisalController {
     private final AppraisalService appraisalService;
 
     @PostMapping
-    public ResponseEntity<Long> createAppraisal(@RequestBody @Valid SellerCarDetailsRequest request) {
-        Long response = appraisalService.createAppraisal(request);
-        return ResponseEntity.ok(response);
+    public ResponseEntity<String> createAppraisal(@RequestBody @Valid SellerCarDetailsRequest request) {
+        String requestId = appraisalService.queueAppraisalRequest(request);
+        return ResponseEntity.accepted().body(requestId);
     }
 }
