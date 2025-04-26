@@ -1,11 +1,9 @@
 package com.example.seller.mapper;
 
+import com.example.seller.dto.AssessedBuyersResponse;
 import com.example.seller.dto.SellerCarDetailsRequest;
 import com.example.seller.dto.SellerCarDetailsResponse;
-import com.example.seller.model.CarDetails;
-import com.example.seller.model.SellerAccountDetails;
-import com.example.seller.model.SellerCarDetails;
-import com.example.seller.model.SellerDetails;
+import com.example.seller.model.*;
 import com.example.seller.service.PasswordService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -13,6 +11,9 @@ import org.springframework.stereotype.Service;
 import java.security.KeyStore;
 import java.security.SecureRandom;
 import java.util.Base64;
+import java.util.Collections;
+import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -99,6 +100,13 @@ public class AppraisalMapper {
 
         SellerDetails sellerDetails = entity.getSellerDetails();
         CarDetails carDetails = entity.getCarDetails();
+        List<AssessedBuyers> assessedBuyers = entity.getAssessedBuyers();
+
+        List<AssessedBuyersResponse> assessedBuyersResponses = assessedBuyers != null
+                ? assessedBuyers.stream()
+                .map(this::mapToAssessedBuyersResponse)
+                .collect(Collectors.toList())
+                : Collections.emptyList();
 
         return new SellerCarDetailsResponse(
                 entity.getAppraisalId(),
@@ -147,7 +155,24 @@ public class AppraisalMapper {
                 entity.getDesireDateToSell(),
                 entity.getPhotoFrontView(),
                 entity.getPhotoBackView(),
-                entity.getInspectionCertPhoto()
+                entity.getInspectionCertPhoto(),
+                assessedBuyersResponses
+        );
+    }
+
+    public AssessedBuyersResponse mapToAssessedBuyersResponse(AssessedBuyers buyer) {
+        return new AssessedBuyersResponse(
+                buyer.getEmbeddedAppraisalId().getAppraisalId(),
+                buyer.getEmbeddedAppraisalId().getShopId(),
+                buyer.getAssessedDateTime(),
+                buyer.getEmailSentTime(),
+                buyer.isReject(),
+                buyer.getEx(),
+                buyer.getAssessedStatus(),
+                buyer.getApprovalDate(),
+                buyer.getRejectionApprovalDate(),
+                buyer.getUpdatedAt(),
+                buyer.getCreatedAt()
         );
     }
 }

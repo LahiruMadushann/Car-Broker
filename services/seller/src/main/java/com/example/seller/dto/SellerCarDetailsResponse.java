@@ -3,6 +3,8 @@ package com.example.seller.dto;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotNull;
 
+import java.util.List;
+
 public record SellerCarDetailsResponse(
         Long appraisalId,
         String status,
@@ -50,6 +52,7 @@ public record SellerCarDetailsResponse(
         String desireDateToSell,
         String photoFrontView,
         String photoBackView,
-        String inspectionCertPhoto
+        String inspectionCertPhoto,
+        List<AssessedBuyersResponse> assessedBuyers
 ) {
 }
