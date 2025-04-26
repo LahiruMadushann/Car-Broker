@@ -1,6 +1,7 @@
 package com.example.seller.mapper;
 
 import com.example.seller.dto.SellerCarDetailsRequest;
+import com.example.seller.dto.SellerCarDetailsResponse;
 import com.example.seller.model.CarDetails;
 import com.example.seller.model.SellerAccountDetails;
 import com.example.seller.model.SellerCarDetails;
@@ -89,5 +90,64 @@ public class AppraisalMapper {
                 .photoBackView(request.photoBackView())
                 .inspectionCertPhoto(request.inspectionCertPhoto())
                 .build();
+    }
+
+    public SellerCarDetailsResponse fromSeller(SellerCarDetails entity) {
+        if (entity == null) {
+            throw new IllegalArgumentException("sellerCarDetails entity cannot be null");
+        }
+
+        SellerDetails sellerDetails = entity.getSellerDetails();
+        CarDetails carDetails = entity.getCarDetails();
+
+        return new SellerCarDetailsResponse(
+                entity.getAppraisalId(),
+                entity.getStatus(),
+                entity.getIp(),
+                sellerDetails.getSellerPhoneNumber(),
+                sellerDetails.getSellerName(),
+                sellerDetails.getSellerEmail(),
+                sellerDetails.getSellerPostNumber(),
+                sellerDetails.getSellerDistrict(),
+                sellerDetails.getSellerCity(),
+                sellerDetails.getSellerAddress(),
+                carDetails.getCarType(),
+                carDetails.getCarMaker(),
+                carDetails.getCarModelYear(),
+                carDetails.getCarTraveledDistance(),
+                carDetails.getInspectRemain(),
+                carDetails.getCarState(),
+                carDetails.getRunnable(),
+                carDetails.getWheelDrive(),
+                carDetails.getFuel(),
+                carDetails.getShift(),
+                carDetails.getAccident(),
+                carDetails.getDisplacement(),
+                carDetails.getBodyColor(),
+                carDetails.getLoan(),
+                carDetails.getDesireDate(),
+                carDetails.getGrade(),
+                carDetails.getExterior(),
+                carDetails.getScratch(),
+                carDetails.getDent(),
+                carDetails.getPeel(),
+                carDetails.getRust(),
+                carDetails.getInterior(),
+                carDetails.getDirt(),
+                carDetails.getTear(),
+                carDetails.getAirConditioning(),
+                carDetails.getSmoke(),
+                carDetails.getNavigation(),
+                carDetails.getAutoSlide(),
+                carDetails.getLeatherSheet(),
+                carDetails.getHandleType(),
+                carDetails.getBackMonitor(),
+                carDetails.getSunroof(),
+                carDetails.getWheel(),
+                entity.getDesireDateToSell(),
+                entity.getPhotoFrontView(),
+                entity.getPhotoBackView(),
+                entity.getInspectionCertPhoto()
+        );
     }
 }
