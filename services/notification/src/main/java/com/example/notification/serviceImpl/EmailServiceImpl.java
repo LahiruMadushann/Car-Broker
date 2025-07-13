@@ -104,7 +104,7 @@ public class EmailServiceImpl implements EmailService {
 
         message.setSubject(request.subject());
         message.setText(request.content());
-        message.setFrom("noreply@yourcompany.com");
+        message.setFrom("lahirumadu2341@gmail.com");
 
         mailSender.send(message);
         log.info("Simple email sent successfully with ID: {}", emailId);
