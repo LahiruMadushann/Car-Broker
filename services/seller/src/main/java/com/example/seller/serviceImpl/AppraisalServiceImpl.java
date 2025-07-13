@@ -8,7 +8,7 @@ import com.example.seller.mapper.AppraisalMapper;
 import com.example.seller.repository.AppraisalRepo;
 import com.example.seller.service.AppraisalService;
 import com.example.seller.service.AssessedService;
-import com.example.seller.service.BuyerServiceClient;
+import com.example.seller.service.client.BuyerServiceClient;
 import com.example.seller.service.MatchingConditionService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
