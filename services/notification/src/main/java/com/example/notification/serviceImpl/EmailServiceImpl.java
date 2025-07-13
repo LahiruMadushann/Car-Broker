@@ -127,7 +127,7 @@ public class EmailServiceImpl implements EmailService {
 
         helper.setSubject(request.subject());
         helper.setText(request.content(), request.isHtml());
-        helper.setFrom("noreply@yourcompany.com");
+        helper.setFrom("lahirumadu2341@gmail.com");
 
         mailSender.send(message);
         log.info("MIME email sent successfully with ID: {}", emailId);
