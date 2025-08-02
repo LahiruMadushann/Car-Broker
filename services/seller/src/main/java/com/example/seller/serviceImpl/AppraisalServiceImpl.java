@@ -19,6 +19,7 @@ import org.springframework.kafka.core.KafkaTemplate;
 import org.springframework.kafka.support.SendResult;
 import org.springframework.stereotype.Service;
 
+import java.util.Collections;
 import java.util.Objects;
 import java.util.UUID;
 import java.util.concurrent.CompletableFuture;
@@ -34,6 +35,7 @@ public class AppraisalServiceImpl implements AppraisalService {
     private final MatchingConditionService matchingConditionService;
     private final AssessedService assessedService;
     private final KafkaTemplate<String, Object> kafkaTemplate;
+    private final NotificationHelper notificationHelper;
 
     @Value("${spring.kafka.topic.appraisal-requests}")
     private String appraisalRequestsTopic;
@@ -73,6 +75,7 @@ public class AppraisalServiceImpl implements AppraisalService {
             var matchingConditions = buyerServiceClient.getAllMatchingConditions();
             var matchedShopIds = matchingConditionService.automaticMatch(matchingConditions, seller);
             assessedService.saveAssessedDetails(matchedShopIds, seller.getAppraisalId());
+            notificationHelper.sendAppraisalSuccessNotification(seller.getSellerDetails().getSellerEmail(),seller.getAppraisalId(), Collections.singletonList(matchedShopIds.toString()));
             return seller.getAppraisalId();
         } catch (DataIntegrityViolationException e) {
             throw new BadRequestException("Invalid data: " + Objects.requireNonNull(e.getRootCause()).getMessage());
