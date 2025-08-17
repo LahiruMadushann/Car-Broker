@@ -30,10 +30,19 @@ public class BuyerController {
     }
 
     @GetMapping("/all")
-    public ResponseEntity<List<BuyerRegistrationResponse>> getAllBuyers() {
-        var response = buyerService.getAllBuyers();
-        return ResponseEntity.ok(response);
-
+    public ResponseEntity<?> getAllBuyers(
+            @RequestParam(required = false) Integer page,
+            @RequestParam(required = false) Integer size,
+            @RequestParam(required = false) String sortBy,
+            @RequestParam(required = false) String sortDir
+    ) {
+        if (page != null && size != null) {
+            var response = buyerService.getAllBuyersPaginated(page, size, sortBy, sortDir);
+            return ResponseEntity.ok(response);
+        } else {
+            var response = buyerService.getAllBuyers();
+            return ResponseEntity.ok(response);
+        }
     }
 
     @PutMapping("/{buyerId}/{speciality}/matching-conditions")
